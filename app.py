@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 # load model
 data = pd.read_excel("Crop Recommendation Dataset.xlsx")
-
+print(data.columns)
 X = data[['temperature', 'humidity', 'ph', 'rainfall']]
 y = data['label']
 
