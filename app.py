@@ -1,17 +1,19 @@
 from flask import Flask, render_template, request
-import joblib
-import numpy as np
-import os
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier
+
 app = Flask(__name__)
 
-# load model
+# Load dataset
 data = pd.read_excel("Crop Recommendation Dataset.xlsx")
-print(data.columns)
+
+# Correct column names (IMPORTANT)
 X = data[['Temperature', 'Humidity', 'pH', 'Rainfall']]
 y = data['Label']
-model = RandomForestClassifier()
+
+# Train model
+model = DecisionTreeClassifier()
 model.fit(X, y)
 
 @app.route('/')
@@ -27,33 +29,14 @@ def predict():
         rainfall = float(request.form['rainfall'])
 
         input_data = np.array([[temp, humidity, ph, rainfall]])
+        prediction = model.predict(input_data)
 
-        result = model.predict(input_data)[0]
+        return render_template("index.html", prediction=prediction[0])
 
-        # ensure string
-        result = str(result)
-
-        emoji = "🌱"
-
-        if result.lower() == "rice":
-            emoji = "🌾"
-        elif result.lower() == "wheat":
-            emoji = "🌾"
-        elif result.lower() == "banana":
-            emoji = "🍌"
-        elif result.lower() == "cotton":
-            emoji = "🧵"
-        elif result.lower() == "maize":
-            emoji = "🌽"
-        elif result.lower() == "apple":
-            emoji = "🍎"
-
-        return render_template("index.html", prediction=result, emoji=emoji)
-
-    except Exception as e:
-        return f"Error: {str(e)}"
-
+    except:
+        return render_template("index.html", prediction="Invalid Input")
 
 if __name__ == "__main__":
+    import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
