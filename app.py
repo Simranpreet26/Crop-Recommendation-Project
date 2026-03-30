@@ -5,7 +5,7 @@ import numpy as np
 app = Flask(__name__)
 
 # load model
-model = joblib.load("model.pkl")
+model = None
 
 @app.route('/')
 def home():
@@ -18,7 +18,12 @@ def predict():
     ph = float(request.form['ph'])
     rainfall = float(request.form['rainfall'])
 
-    input_data = np.array([[temp, humidity, ph, rainfall]])
+    
+   input_data = np.array([[temp, humidity, ph, rainfall]])
+
+if model is None:
+    prediction = ["Model not loaded"]
+else:
     prediction = model.predict(input_data)
 
     return render_template("index.html", prediction=prediction[0])
