@@ -2,19 +2,28 @@ from flask import Flask, render_template, request
 import pandas as pd
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 
 app = Flask(__name__)
 
 # Load dataset
 data = pd.read_excel("Crop Recommendation Dataset.xlsx")
 
-# Correct column names
+# Features
 X = data[['Temperature', 'Humidity', 'pH', 'Rainfall']]
 y = data['Label']
 
+# Train-test split for accuracy
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
 # Train model
 model = DecisionTreeClassifier()
-model.fit(X, y)
+model.fit(X_train, y_train)
+
+# Accuracy
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
 
 @app.route('/')
 def home():
@@ -31,10 +40,9 @@ def predict():
         input_data = np.array([[temp, humidity, ph, rainfall]])
         result = model.predict(input_data)[0]
 
-        # clean result
         result = str(result).strip().lower()
 
-        # emoji logic
+        # emoji
         emoji = "🌱"
 
         if "rice" in result:
@@ -51,10 +59,17 @@ def predict():
             emoji = "🍎"
         elif "kidneybeans" in result:
             emoji = "🫘"
-        elif "mango" in result:
-            emoji = "🥭"
 
-        return render_template("index.html", prediction=result.title(), emoji=emoji)
+        # image
+        image = f"https://source.unsplash.com/300x200/?{result}"
+
+        return render_template(
+            "index.html",
+            prediction=result.title(),
+            emoji=emoji,
+            image=image,
+            acc=round(accuracy * 100, 2)
+        )
 
     except:
         return render_template("index.html", prediction="Invalid Input", emoji="⚠️")
