@@ -2,11 +2,18 @@ from flask import Flask, render_template, request
 import joblib
 import numpy as np
 import os
-
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
 app = Flask(__name__)
 
 # load model
-model = None
+data = pd.read_excel("Crop Recommendation Dataset.xlsx")
+
+X = data[['temperature', 'humidity', 'ph', 'rainfall']]
+y = data['label']
+
+model = RandomForestClassifier()
+model.fit(X, y)
 
 @app.route('/')
 def home():
