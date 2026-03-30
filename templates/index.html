@@ -39,6 +39,10 @@
         h1 {
             color: white;
         }
+
+        h2 {
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -57,7 +61,7 @@
     </form>
 
     {% if prediction %}
-        <h2>🌱 Recommended Crop:</h2>
+        <h2>{{ emoji }} Recommended Crop:</h2>
         <h3 style="color: green;">{{ prediction }}</h3>
     {% endif %}
 </div>
