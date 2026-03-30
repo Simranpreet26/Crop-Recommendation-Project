@@ -14,19 +14,23 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    temp = float(request.form['temperature'])
-    humidity = float(request.form['humidity'])
-    ph = float(request.form['ph'])
-    rainfall = float(request.form['rainfall'])
+    try:
+        temp = float(request.form['temperature'])
+        humidity = float(request.form['humidity'])
+        ph = float(request.form['ph'])
+        rainfall = float(request.form['rainfall'])
 
-    input_data = np.array([[temp, humidity, ph, rainfall]])
+        input_data = np.array([[temp, humidity, ph, rainfall]])
 
-    if model is None:
-        prediction = ["Model not loaded"]
-    else:
-        prediction = model.predict(input_data)
+        if model is None:
+            result = "Model not loaded"
+        else:
+            result = model.predict(input_data)[0]
 
-    return render_template("index.html", prediction=prediction[0])
+        return render_template("index.html", prediction=result)
+
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 
 if __name__ == "__main__":
