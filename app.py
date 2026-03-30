@@ -28,27 +28,30 @@ def predict():
 
         input_data = np.array([[temp, humidity, ph, rainfall]])
 
-        if model is None:
-            result = "Model not loaded"
-        else:
-            result = model.predict(input_data)[0]
+        result = model.predict(input_data)[0]
 
-       emoji = "🌱"
+        # ensure string
+        result = str(result)
 
-if result.lower() == "rice":
-    emoji = "🌾"
-elif result.lower() == "wheat":
-    emoji = "🌾"
-elif result.lower() == "banana":
-    emoji = "🍌"
-elif result.lower() == "cotton":
-    emoji = "🧵"
-elif result.lower() == "maize":
-    emoji = "🌽"
-elif result.lower() == "apple":
-    emoji = "🍎"
+        emoji = "🌱"
 
-return render_template("index.html", prediction=result, emoji=emoji)
+        if result.lower() == "rice":
+            emoji = "🌾"
+        elif result.lower() == "wheat":
+            emoji = "🌾"
+        elif result.lower() == "banana":
+            emoji = "🍌"
+        elif result.lower() == "cotton":
+            emoji = "🧵"
+        elif result.lower() == "maize":
+            emoji = "🌽"
+        elif result.lower() == "apple":
+            emoji = "🍎"
+
+        return render_template("index.html", prediction=result, emoji=emoji)
+
+    except Exception as e:
+        return f"Error: {str(e)}"
     except Exception as e:
         return f"Error: {str(e)}"
 
