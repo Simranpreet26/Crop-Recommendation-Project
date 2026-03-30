@@ -60,9 +60,7 @@ project/
 │── Crop Recommendation Dataset.xlsx
 │── templates/
 │     └── index.html
-│── static/
-│     └── style.css
-│     └── screenshot.png
+
 
 
 ##  ⭐ Future Improvements
