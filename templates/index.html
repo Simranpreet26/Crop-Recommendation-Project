@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Crop Recommendation System</title>
+    <title>Smart Crop Recommendation</title>
 
     <style>
         body {
@@ -16,7 +16,7 @@
         .box {
             background: white;
             padding: 30px;
-            width: 300px;
+            width: 320px;
             margin: auto;
             border-radius: 15px;
             box-shadow: 0px 0px 15px gray;
@@ -34,21 +34,37 @@
             color: white;
             border: none;
             cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: darkgreen;
+            transform: scale(1.1);
         }
 
         h1 {
             color: white;
         }
 
-        h2 {
-            margin-top: 20px;
+        img {
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+
+        .result {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
         }
     </style>
 </head>
 
 <body>
 
-<h1>🌾 Crop Recommendation System</h1>
+<h1>🌾 Smart Crop Recommendation System</h1>
 
 <div class="box">
     <form action="/predict" method="post">
@@ -61,8 +77,14 @@
     </form>
 
     {% if prediction %}
+    <div class="result">
         <h2>{{ emoji }} Recommended Crop:</h2>
         <h3 style="color: green;">{{ prediction }}</h3>
+
+        <img src="{{ image }}" width="250">
+
+        <p><b>Model Accuracy:</b> {{ acc }}%</p>
+    </div>
     {% endif %}
 </div>
 
