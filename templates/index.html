@@ -1,41 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Crop Recommendation</title>
+    <title>Crop Recommendation System</title>
+
     <style>
         body {
             font-family: Arial;
-            background: linear-gradient(to right, #56ab2f, #a8e063);
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                        url("https://images.unsplash.com/photo-1500382017468-9049fed747ef");
+            background-size: cover;
             text-align: center;
-            color: white;
+            padding: 50px;
         }
 
-        .container {
+        .box {
             background: white;
-            color: black;
-            padding: 20px;
-            margin: 50px auto;
+            padding: 30px;
             width: 300px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px gray;
+            margin: auto;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px gray;
         }
 
         input {
             width: 90%;
-            padding: 8px;
-            margin: 5px;
+            padding: 10px;
+            margin: 10px;
         }
 
         button {
+            padding: 10px 20px;
             background: green;
             color: white;
-            padding: 10px;
             border: none;
             cursor: pointer;
         }
 
-        h3 {
-            color: green;
+        h1 {
+            color: white;
         }
     </style>
 </head>
@@ -44,18 +46,19 @@
 
 <h1>🌾 Crop Recommendation System</h1>
 
-<div class="container">
+<div class="box">
     <form action="/predict" method="post">
-        <input type="text" name="temperature" placeholder="Temperature"><br>
-        <input type="text" name="humidity" placeholder="Humidity"><br>
-        <input type="text" name="ph" placeholder="pH"><br>
-        <input type="text" name="rainfall" placeholder="Rainfall"><br>
+        <input type="text" name="temperature" placeholder="Temperature" required>
+        <input type="text" name="humidity" placeholder="Humidity" required>
+        <input type="text" name="ph" placeholder="pH" required>
+        <input type="text" name="rainfall" placeholder="Rainfall" required>
 
         <button type="submit">Predict</button>
     </form>
 
     {% if prediction %}
-       <h3>{{ emoji }} Recommended Crop: {{ prediction }}</h3>
+        <h2>🌱 Recommended Crop:</h2>
+        <h3 style="color: green;">{{ prediction }}</h3>
     {% endif %}
 </div>
 
